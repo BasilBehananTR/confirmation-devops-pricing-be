@@ -1,0 +1,100 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: "confirmation-reports-be-development-v1"
+  namespace: outpost-demo
+  labels:
+    app: confirmation-reports-be
+    version: "v1.0.0"
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: confirmation-reports-be
+      version: "v1.0.0"
+  template:
+    metadata:
+      labels:
+        app: confirmation-reports-be
+        version: "v1.0.0"
+    spec:
+      containers:
+        - name: application-container
+          image: 593793065716.dkr.ecr.us-west-2.amazonaws.com/confirmation-devops-reports-be:1.0.0
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 11111
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            privileged: false
+            capabilities:
+              drop:
+                - ALL
+            runAsNonRoot: true
+            runAsUser: 14000
+            runAsGroup: 14001
+            seccompProfile:
+              type: RuntimeDefault
+          resources:
+            limits:
+              cpu: 250m
+              memory: 512Mi
+            requests:
+              cpu: 100m
+              memory: 512Mi
+          env:
+            - name: ASPNETCORE_ENVIRONMENT
+              value: "Development"
+            - name: DD_AGENT_HOST
+              valueFrom:
+                fieldRef:
+                  apiVersion: "v1"
+                  fieldPath: "status.hostIP"
+            - name: COMPlus_EnableDiagnostics
+              value: "1"
+            - name: OVRR_ConnectionStrings_ConfirmationRabbitMQ
+              value: 'amqp://default_user_hn-rjZ1vbVqongIqTj3:bRf3w0xI2DVJz74r4e_qJ9sAHoTtvkPk@rabbitmq.rabbitmq.svc:5672'
+            - name: OVRR__ConnectionStrings__ConfirmationRabbitMQ__Host
+              value: rabbitmq.rabbitmq.svc
+            - name: OVRR__ConnectionStrings__ConfirmationRabbitMQ__Port
+              value: "5672"
+            - name: OVRR__ConnectionStrings__ConfirmationRabbitMQ__UserName
+              value: default_user_hn-rjZ1vbVqongIqTj3
+            - name: OVRR__ConnectionStrings__ConfirmationRabbitMQ__Password
+              value: bRf3w0xI2DVJz74r4e_qJ9sAHoTtvkPk
+          readinessProbe:
+            tcpSocket:
+              port: 11111
+            initialDelaySeconds: 0
+            periodSeconds: 10
+            successThreshold: 3
+          livenessProbe:
+            tcpSocket:
+              port: 11111
+            initialDelaySeconds: 0
+            periodSeconds: 10
+            timeoutSeconds: 1
+            failureThreshold: 3
+          startupProbe:
+            tcpSocket:
+              port: 11111
+            initialDelaySeconds: 0
+            periodSeconds: 10
+            failureThreshold: 30
+          volumeMounts:
+            - mountPath: /app/Secrets
+              name: app-secrets
+              readOnly: true
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 14000
+        runAsGroup: 14001
+        fsGroup: 14000
+      volumes:
+        - name: datadog-temp
+          emptyDir: {}
+        - name: app-secrets
+          secret:
+            defaultMode: 420
+            secretName: confirmation-reports-be-secrets

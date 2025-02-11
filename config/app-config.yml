@@ -1,0 +1,28 @@
+---
+albroute: /api/confirmation/confirmationgraphql
+albssl: 'true'
+canarypercent: '100'
+compute: eks
+deploymentengine: cumulus
+deploytype: bluegreen
+healthcheckpath: /api/confirmation/confirmationgraphql/health/live
+is_build: 'no'
+is_dbmigration: 'no'
+is_deploy: 'yes'
+liveness_endpoint: /api/confirmation/confirmationgraphql/health/live
+livenessprobe_port: '8080'
+multiregion: true
+publicservice: 'no'
+readiness_endpoint: /api/confirmation/confirmationgraphql/health/ready
+readinessprobe_port: '8080'
+repositoryinfo:
+  coderepository: ado
+  giturl: https://dev.azure.com/tr-tax/TaxProf/_git/aafm-confirmation-nucleus-be
+  runtime: dotnet5
+rootvolumesize: 100G
+serviceport: '8080'
+serviceshortname: orl-gql-be
+servicetype: api
+startup_endpoint: /api/confirmation/confirmationgraphql/health/ready
+startupprobe_port: '8080'
+zone: us

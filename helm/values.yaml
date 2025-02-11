@@ -1,0 +1,35 @@
+service_name: confirmation-reports-be
+url_path:
+  - /api/confirmation/orleanssilohost
+# replace during deploy
+image_url: 593793065716.dkr.ecr.us-west-2.amazonaws.com/confirmation-devops-reports-be:1.0.0
+env: development
+namespace: outpost-demo
+hosts: ['ci.api.confirmation.8067.aws-int.thomsonreuters.com']
+tls_ingress_certs: istio-ingressgateway-certs
+application_port: 11111
+gateway_port: 30000
+minreplicas: 2
+maxreplicas: 4
+desiredreplicas: 2
+targetavgcpu: 50
+targetavgmem: 512Mi
+cpuresourcelimit: 250m
+memresourcelimit: 512Mi
+cpuresourcerequest: 100m
+memresourcerequest: 512Mi
+readiness_port: 11111
+readiness_threshold: 3
+readiness_periodseconds: 10
+readiness_initialdelayseconds: 0
+liveness_port: 11111
+liveness_initialdelayseconds: 0
+liveness_periodseconds: 10
+liveness_timeoutseconds: 1
+liveness_failurethreshold: 3
+startup_port: 11111
+startup_failurethreshold: 30
+startup_periodseconds: 10
+startup_initialdelayseconds: 0
+pod_disruption_budget: 50%
+

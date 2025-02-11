@@ -1,0 +1,19 @@
+name: confirmation-reports-be
+apiVersion: v2
+
+# This is the chart version. This version number should be incremented each time you make changes
+# to the chart and its templates, including the app version.
+# Versions are expected to follow Semantic Versioning (https://semver.org/)
+# The command `sed` is used to modify this value during bake stage. date +%Y%m%d%H%M%S
+
+version: 1
+# This is the version number of the application being deployed. This version number should be
+# incremented each time you make changes to the application. Versions are not expected to
+# follow Semantic Versioning. They should reflect the version the application is using.
+# The command `sed` is used to modify this value during bake stage.
+
+appVersion: 1
+
+description: |
+  Application to be deployed into EKS.
+type: application

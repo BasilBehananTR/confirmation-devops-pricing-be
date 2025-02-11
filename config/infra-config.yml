@@ -1,0 +1,5 @@
+---
+s3_bucket_required: False
+rds_instance_required: False
+es_cluster_required: False
+sqs_queue_required: False

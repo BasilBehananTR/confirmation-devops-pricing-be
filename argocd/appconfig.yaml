@@ -1,0 +1,21 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: reports-be
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: 'https://github.com/tr/confirmation-devops-reports-be.git'
+    targetRevision: dev
+    path: helm/Chart
+    helm:
+      valueFiles:
+        - values.yaml
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: outpost-demo
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true

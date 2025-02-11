@@ -1,0 +1,11 @@
+---
+cpuresourcelimit: 250m
+cpuresourcerequest: 100m
+desiredreplicas: '2'
+maxreplicas: '4'
+memresourcelimit: 1G
+memresourcerequest: 512Mi
+minreplicas: '2'
+poddisruptionbudget: 50%
+targetavgcpu: '50'
+targetavgmem: 512Mi
